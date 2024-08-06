@@ -21,6 +21,14 @@
             <id>spigotmc-repo</id>
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
         </repository>
+        <repository>
+            <id>papermc</id>
+            <url>https://repo.papermc.io/repository/maven-public/</url>
+        </repository>
+        <repository>
+            <id>arim-mvn-lgpl3</id>
+            <url>https://mvn-repo.arim.space/lesser-gpl3/</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -48,6 +56,18 @@
             <version>1.18.26</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>io.papermc</groupId>
+            <artifactId>paperlib</artifactId>
+            <version>1.0.7</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>space.arim.morepaperlib</groupId>
+            <artifactId>morepaperlib</artifactId>
+            <version>0.4.3</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -62,7 +82,7 @@
                     <target>${java.version}</target>
                 </configuration>
             </plugin>
-            <!--<plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
                 <version>3.1.0</version>
@@ -74,31 +94,20 @@
                         </goals>
                         <configuration>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
-                            <filters>
-                                <filter>
-                                    <artifact>org.jsoup</artifact>
-                                    <includes>
-                                        <include>org/jsoup/Jsoup.class</include>
-                                        <include>org/jsoup/nodes/Document.class</include>
-                                        <include>org/jsoup/nodes/Element.class</include>
-                                        <include>org/jsoup/helper/StringUtil.class</include>
-                                        <include>org/jsoup/helper/Validate.class</include>
-                                        <include>org/jsoup/parser/Tag.class</include>
-                                        <include>org/jsoup/parser/Parser.class</include>
-                                        <include>org/jsoup/select/*.class</include>
-                                    </includes>
-                                </filter>
-                            </filters>
                             <relocations>
                                 <relocation>
-                                    <pattern>org.jsoup</pattern>
-                                    <shadedPattern>roryslibrary.jsoup</shadedPattern>
+                                    <pattern>io.papermc.lib</pattern>
+                                    <shadedPattern>org.plugins.rpghorses.paperlib</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>space.arim.morepaperlib</pattern>
+                                    <shadedPattern>org.plugins.rpghorses.morepaperlib</shadedPattern>
                                 </relocation>
                             </relocations>
                         </configuration>
                     </execution>
                 </executions>
-            </plugin>-->
+            </plugin>
         </plugins>
         <resources>
             <resource>

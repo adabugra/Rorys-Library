@@ -3,11 +3,12 @@ package roryslibrary.managers;
 import lombok.Getter;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitRunnable;
+import space.arim.morepaperlib.MorePaperLib;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.time.Duration;
 
 public class SQLManager {
 	
@@ -38,22 +39,18 @@ public class SQLManager {
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-			
+
 			// Keep SQL Connection active
-			(new BukkitRunnable() {
-				@Override
-				public void run() {
-					try {
-						if (connection != null && !connection.isClosed()) {
-							connection.createStatement().execute("SELECT 1");
-						}
-					} catch (SQLException e) {
-						connection = createConnection();
+			new MorePaperLib(plugin).scheduling().asyncScheduler().runAtFixedRate(() -> {
+				try {
+					if (connection != null && !connection.isClosed()) {
+						connection.createStatement().execute("SELECT 1");
 					}
+				} catch (SQLException e) {
+					connection = createConnection();
 				}
-			}).runTaskTimerAsynchronously(plugin, 60 * 20, 60 * 20);
+			}, Duration.ofMillis(60 * 20 * 50), Duration.ofMillis(60 * 20 * 50));
 		}
-		
 	}
 	public String getTableName() {
 		return tableName;
