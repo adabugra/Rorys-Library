@@ -70,7 +70,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.13.0</version>
+                <version>3.7.0</version>
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
@@ -79,7 +79,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.6.0</version>
+                <version>3.1.0</version>
                 <executions>
                     <execution>
                         <phase>package</phase>
@@ -90,12 +90,8 @@
                             <createDependencyReducedPom>false</createDependencyReducedPom>
                             <relocations>
                                 <relocation>
-                                    <pattern>io.papermc.lib</pattern>
-                                    <shadedPattern>org.plugins.rpghorses.paperlib</shadedPattern>
-                                </relocation>
-                                <relocation>
                                     <pattern>space.arim.morepaperlib</pattern>
-                                    <shadedPattern>org.plugins.rpghorses.morepaperlib</shadedPattern>
+                                    <shadedPattern>roryslibrary.lib.morepaperlib</shadedPattern>
                                 </relocation>
                             </relocations>
                         </configuration>
