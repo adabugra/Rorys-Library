@@ -3,12 +3,14 @@ package roryslibrary.util;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
+import space.arim.morepaperlib.MorePaperLib;
 
 import javax.net.ssl.HttpsURLConnection;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.time.Duration;
 
 public class UpdateNotifier {
 	
@@ -41,7 +43,7 @@ public class UpdateNotifier {
 	
 	public void checkForUpdate() {
 		//The request is executed asynchronously as to not block the main thread.
-		Bukkit.getScheduler().runTaskAsynchronously(this.javaPlugin, () -> {
+		new MorePaperLib(javaPlugin).scheduling().asyncScheduler().run(() -> {
 			needsUpdate = false;
 			//Request the current version of your plugin on SpigotMC.
 			try {
@@ -57,16 +59,16 @@ public class UpdateNotifier {
 				e.printStackTrace();
 				return;
 			}
-			
+
 			//Check if the requested version is the same as the one in your plugin.yml.
 			if (this.localPluginVersion.equals(this.spigotPluginVersion)) return;
-			
+
 			String[] localNums = localPluginVersion.split(".");
 			String[] spigotNums = spigotPluginVersion.split(".");
 			for (int i = 0; i < Math.max(localNums.length, spigotNums.length); i++) {
 				int localNum = localNums.length <= i ? 0 : Integer.parseInt(localNums[i]);
 				int spigotNum = spigotNums.length <= i ? 0 : Integer.parseInt(spigotNums[i]);
-				
+
 				if (localNum > spigotNum) {
 					return;
 				} else if (localNum < spigotNum) {
@@ -74,10 +76,11 @@ public class UpdateNotifier {
 					break;
 				}
 			}
-			
+
 			UPDATE_MSG = messagingUtil.placeholders("{PREFIX}Update available! Go to " + messagingUtil.getFirstColor() + "https://www.spigotmc.org/resources/" + ID + "/ &7to update\n"
 					+ "{PREFIX}Current version: " + messagingUtil.getFirstColor() + localPluginVersion + "\n"
 					+ "{PREFIX}New version: " + messagingUtil.getFirstColor() + spigotPluginVersion);
+
 		});
 	}
 }

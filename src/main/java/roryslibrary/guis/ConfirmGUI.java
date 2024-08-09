@@ -15,11 +15,11 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitRunnable;
 import roryslibrary.configs.CustomConfig;
 import roryslibrary.util.ItemUtil;
 import roryslibrary.util.MessagingUtil;
 import roryslibrary.util.Version;
+import space.arim.morepaperlib.MorePaperLib;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,13 +82,10 @@ public abstract class ConfirmGUI implements Listener {
 	@EventHandler
 	public void onClose(InventoryCloseEvent event) {
 		if (inv.getViewers().contains(event.getPlayer())) {
-			new BukkitRunnable() {
-				@Override
-				public void run() {
-					unregister();
-					onClose();
-				}
-			}.runTaskLater(plugin, 1L);
+			new MorePaperLib(plugin).scheduling().entitySpecificScheduler(event.getPlayer()).runDelayed(() -> {
+				unregister();
+				onClose();
+			},null,  1L);
 		}
 	}
 	
